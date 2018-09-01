@@ -1,0 +1,22 @@
+{
+  "name": "create-blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bohyhyeon-n/bohyhyeon-n.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bohyhyeon-n/bohyhyeon-n.github.io/issues"
+  },
+  "homepage": "https://github.com/bohyhyeon-n/bohyhyeon-n.github.io#readme",
+  "dependencies": {
+    "markdown-it": "^8.4.2"
+  }
+}
