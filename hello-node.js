@@ -9,10 +9,33 @@ const contentFiles = fs.readdirSync(directoryPath);
 // 템플릿 가져오기
 const indexHtmlFormat = fs.readFileSync("./templates/index.html", "utf8");
 const listHtmlFormat = fs.readFileSync("./templates/list.html", "utf8");
-// mardown-it
+// mardown-it & highlightjs
+const hljs = require("highlight.js");
 
-var MarkdownIt = require("markdown-it"),
-  md = new MarkdownIt();
+const md = require("markdown-it")({
+  html: false,
+  xhtmlOut: false,
+  breaks: false,
+  langPrefix: "language-",
+  linkify: true,
+  typographer: true,
+  quotes: "“”‘’",
+  highlight: function(str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return (
+          '<pre class="hljs"><code>' +
+          hljs.highlight(lang, str, true).value +
+          "</code></pre>"
+        );
+      } catch (__) {}
+    }
+
+    return (
+      '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + "</code></pre>"
+    );
+  }
+});
 
 // deploy디렉토리 생성
 const dir = "./deploy";
@@ -27,17 +50,19 @@ getHtmlFileName = file => {
 const deployFiles = [];
 // map함수로 content안에 있는 파일들을 반복문을 돌면서 deploy안에 html파일 생성
 contentFiles.map(file => {
-  let body = fs.readFileSync(`./contents/${file}`, "utf-8");
-  body = md.render(body);
+  const body = fs.readFileSync(`./contents/${file}`, "utf8");
+
+  const convertedBody = md.render(body);
+  console.log(convertedBody);
   articleHtml = ejs.render(indexHtmlFormat, {
-    body
+    body: convertedBody
   });
   const fileName = getHtmlFileName(file);
   fs.writeFileSync(`./deploy/${fileName}.html`, articleHtml);
   deployFiles.push(fileName);
 });
 
-// index.html파일 생성
+// index.html파일 생성 / 파일 목록 렌더
 const listHtml = ejs.render(listHtmlFormat, {
   fileList: deployFiles
 });
