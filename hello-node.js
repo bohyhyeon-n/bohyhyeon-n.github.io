@@ -7,8 +7,15 @@ const directoryPath = path.join(__dirname, "contents");
 const contentFiles = fs.readdirSync(directoryPath);
 
 // 템플릿 가져오기
-const indexHtmlFormat = fs.readFileSync("./templates/index.html", "utf8");
-const listHtmlFormat = fs.readFileSync("./templates/list.html", "utf8");
+const articleHtmlFormat = fs.readFileSync(
+  "./templates/article_format.html",
+  "utf8"
+);
+const listHtmlFormat = fs.readFileSync("./templates/list_format.html", "utf8");
+const layoutHtmlFormat = fs.readFileSync(
+  "./templates/layout_format.html",
+  "utf8"
+);
 // mardown-it & highlightjs
 const hljs = require("highlight.js");
 
@@ -53,9 +60,11 @@ contentFiles.map(file => {
   const body = fs.readFileSync(`./contents/${file}`, "utf8");
 
   const convertedBody = md.render(body);
-  console.log(convertedBody);
-  articleHtml = ejs.render(indexHtmlFormat, {
+  const articleContent = ejs.render(articleHtmlFormat, {
     body: convertedBody
+  });
+  const articleHtml = ejs.render(layoutHtmlFormat, {
+    content: articleContent
   });
   const fileName = getHtmlFileName(file);
   fs.writeFileSync(`./deploy/${fileName}.html`, articleHtml);
@@ -63,8 +72,11 @@ contentFiles.map(file => {
 });
 
 // index.html파일 생성 / 파일 목록 렌더
-const listHtml = ejs.render(listHtmlFormat, {
-  fileList: deployFiles
+const listContent = ejs.render(listHtmlFormat, {
+  lists: deployFiles
+});
+const listHtml = ejs.render(layoutHtmlFormat, {
+  content: listContent
 });
 
 fs.writeFileSync("./index.html", listHtml);
