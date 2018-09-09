@@ -1,3 +1,8 @@
++++
+title="Sigrid"
+desc="Sigrid Album [Raw] Tracklist"
++++
+
 # music
 
 ## Sigrid
