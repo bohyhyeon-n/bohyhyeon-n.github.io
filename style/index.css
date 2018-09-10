@@ -1,0 +1,26 @@
+.list {
+  padding: 1.5rem;
+  border-bottom: 1px solid #dddddd;
+  font-size: 0.8rem;
+}
+
+.list__date {
+  color: #212121;
+  padding-bottom: 0.5rem;
+}
+
+.list__link {
+  text-decoration: none;
+}
+
+.list__link .title {
+  margin: 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #262626;
+}
+
+.list__link .desc {
+  color: #424242;
+}
+/*# sourceMappingURL=index.css.map */

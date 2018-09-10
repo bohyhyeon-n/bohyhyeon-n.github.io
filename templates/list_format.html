@@ -1,9 +1,15 @@
-<ul>
-  <% lists.map(list => {%>
-    <li>
-      <a href="./deploy/<%=list %>.html">
-        <%=list %>
-      </a>
-    </li>
-    <% }) %>
-</ul>
+<% lists.map(list => {%>
+  <div class="list">
+    <span class="list__date">
+      <%=list.date %>
+    </span>
+    <a class="list__link" href="./deploy/<%=list.path%>">
+      <h2 class="title">
+        <%=list.title %>
+      </h2>
+      <p class="desc">
+        <%=list.desc %>
+      </p>
+    </a>
+  </div>
+  <% }) %>

@@ -1,0 +1,25 @@
+$grey-lighter: #dddddd;
+$black-darkest: #262626;
+$black-darker: #212121;
+$grey-darkest: #424242;
+.list {
+  padding: 1.5rem;
+  border-bottom: 1px solid $grey-lighter;
+  font-size: 0.8rem;
+  &__date {
+    color: $black-darker;
+    padding-bottom: 0.5rem;
+  }
+  &__link {
+    text-decoration: none;
+    .title {
+      margin: 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 900;
+      color: $black-darkest;
+    }
+    .desc {
+      color: $grey-darkest;
+    }
+  }
+}

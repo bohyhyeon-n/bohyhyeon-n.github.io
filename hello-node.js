@@ -53,22 +53,59 @@ if (!fs.existsSync(dir)) {
 getHtmlFileName = file => {
   return file.slice(0, file.indexOf(".")).toLocaleLowerCase();
 };
+// 본문 추출 함수
+extractBody = text => {
+  return text.replace(/(\+{3})([\s\S]+?)(\1)/, "");
+};
+
+// 글 정보 추출 함수
+
+extractValue = text => {
+  const string = text.match(/(\+{3})([\s|\S]+?)\1/);
+
+  if (!string) {
+    return null;
+  } else {
+    const valueLines = string[2].match(/[^\r\n]+/g);
+    const values = {};
+    if (valueLines) {
+      valueLines.map(valueLine => {
+        const keyAndValue = valueLine.match(/(.+)[=\n](.+)/);
+        if (keyAndValue) {
+          const key = keyAndValue[1].replace(/\s/g, "");
+          const value = keyAndValue[2].replace(/['"]/g, "").trim();
+          values[key] = value;
+        }
+      });
+      return values;
+    }
+  }
+};
 // deploy 폴더 안에 넣은 파일의 리스트
 const deployFiles = [];
+
 // map함수로 content안에 있는 파일들을 반복문을 돌면서 deploy안에 html파일 생성
 contentFiles.map(file => {
-  const body = fs.readFileSync(`./contents/${file}`, "utf8");
+  const text = fs.readFileSync(`./contents/${file}`, "utf8");
+  const convertedBody = md.render(extractBody(text));
+  const value = extractValue(text);
+  if (value) {
+    const title = value.title || " ";
+    const date = value.date || " ";
+    const desc = value.desc || " ";
+    const articleContent = ejs.render(articleHtmlFormat, {
+      body: convertedBody,
+      title,
+      date
+    });
 
-  const convertedBody = md.render(body);
-  const articleContent = ejs.render(articleHtmlFormat, {
-    body: convertedBody
-  });
-  const articleHtml = ejs.render(layoutHtmlFormat, {
-    content: articleContent
-  });
-  const fileName = getHtmlFileName(file);
-  fs.writeFileSync(`./deploy/${fileName}.html`, articleHtml);
-  deployFiles.push(fileName);
+    const articleHtml = ejs.render(layoutHtmlFormat, {
+      content: articleContent
+    });
+    const fileName = getHtmlFileName(file);
+    fs.writeFileSync(`./deploy/${fileName}.html`, articleHtml);
+    deployFiles.push({ path: `${fileName}.html`, title, date, desc });
+  }
 });
 
 // index.html파일 생성 / 파일 목록 렌더

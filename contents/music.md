@@ -1,6 +1,7 @@
 +++
 title="Sigrid"
 desc="Sigrid Album [Raw] Tracklist"
+date ="20180909"
 +++
 
 # music
