@@ -5,6 +5,8 @@ const ejs = require("ejs");
 const directoryPath = path.join(__dirname, "contents");
 
 const contentFiles = fs.readdirSync(directoryPath);
+// 사용자 파일 읽기
+const authorFile = fs.readFileSync("./author/author.md", "utf8");
 
 // 템플릿 가져오기
 const articleHtmlFormat = fs.readFileSync(
@@ -50,17 +52,17 @@ if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir);
 }
 // 확장자를 제외한 파일 이름을 얻는 함수
-getHtmlFileName = file => {
+const getHtmlFileName = file => {
   return file.slice(0, file.indexOf(".")).toLocaleLowerCase();
 };
 // 본문 추출 함수
-extractBody = text => {
-  return text.replace(/(\+{3})([\s\S]+?)(\1)/, "");
+const extractBody = text => {
+  return text.replace(/(\+{3})([\s|\S]+?)(\1)/, "");
 };
 
 // 글 정보 추출 함수
 
-extractValue = text => {
+const extractValue = text => {
   const string = text.match(/(\+{3})([\s|\S]+?)\1/);
 
   if (!string) {
@@ -81,6 +83,9 @@ extractValue = text => {
     }
   }
 };
+// 사용자 값 읽기
+const authorValue = extractValue(authorFile);
+console.log(authorValue);
 // deploy 폴더 안에 넣은 파일의 리스트
 const deployFiles = [];
 
@@ -96,7 +101,8 @@ contentFiles.map(file => {
     const articleContent = ejs.render(articleHtmlFormat, {
       body: convertedBody,
       title,
-      date
+      date,
+      disqus: authorValue.disqus
     });
 
     const articleHtml = ejs.render(layoutHtmlFormat, {
