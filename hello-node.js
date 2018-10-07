@@ -18,6 +18,10 @@ const layoutHtmlFormat = fs.readFileSync(
   "./templates/layout_format.html",
   "utf8"
 );
+const HeaderHtmlFormat = fs.readFileSync(
+  "./templates/header_format.html",
+  "utf8"
+);
 // mardown-it & highlightjs
 const hljs = require("highlight.js");
 
@@ -72,7 +76,7 @@ const extractValue = text => {
     const values = {};
     if (valueLines) {
       valueLines.map(valueLine => {
-        const keyAndValue = valueLine.match(/(.+)[=\n](.+)/);
+        const keyAndValue = valueLine.match(/(.+?)=(.+)/);
         if (keyAndValue) {
           const key = keyAndValue[1].replace(/\s/g, "");
           const value = keyAndValue[2].replace(/['"]/g, "").trim();
@@ -88,7 +92,23 @@ const authorValue = extractValue(authorFile);
 console.log(authorValue);
 // deploy 폴더 안에 넣은 파일의 리스트
 const deployFiles = [];
-
+const header = ejs.render(HeaderHtmlFormat, {
+  title: authorValue.title,
+  logo: authorValue.logo,
+  github: authorValue.github
+});
+const authorBody = extractBody(authorFile);
+const author = ejs.render(articleHtmlFormat, {
+  title: "ABOUT",
+  date: "",
+  body: authorBody,
+  disqus: authorValue.disqus
+});
+const aboutHtml = ejs.render(layoutHtmlFormat, {
+  content: author,
+  header
+});
+fs.writeFileSync(`./deploy/about.html`, aboutHtml);
 // map함수로 content안에 있는 파일들을 반복문을 돌면서 deploy안에 html파일 생성
 contentFiles.map(file => {
   const text = fs.readFileSync(`./contents/${file}`, "utf8");
@@ -106,7 +126,8 @@ contentFiles.map(file => {
     });
 
     const articleHtml = ejs.render(layoutHtmlFormat, {
-      content: articleContent
+      content: articleContent,
+      header
     });
     const fileName = getHtmlFileName(file);
     fs.writeFileSync(`./deploy/${fileName}.html`, articleHtml);
@@ -119,13 +140,8 @@ const listContent = ejs.render(listHtmlFormat, {
   lists: deployFiles
 });
 const listHtml = ejs.render(layoutHtmlFormat, {
-  content: listContent
+  content: listContent,
+  header
 });
 
 fs.writeFileSync("./index.html", listHtml);
-
-var balanced = require("balanced-match");
-
-console.log(balanced("{", "}", "pre{in{nested}}post"));
-console.log(balanced("{", "}", "pre{first}between{second}post"));
-console.log(balanced(/\s+\{\s+/, /\s+\}\s+/, "pre  {   in{nest}   }  post"));

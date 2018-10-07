@@ -1,3 +1,12 @@
+body {
+  margin: 0;
+}
+
+.content {
+  width: 70%;
+  margin: 0 auto;
+}
+
 .list {
   padding: 1.5rem;
   border-bottom: 1px solid #dddddd;
@@ -22,5 +31,69 @@
 
 .list__link .desc {
   color: #424242;
+}
+
+.header-wrap {
+  border-bottom: 1px solid #dddddd;
+  height: 4rem;
+  width: 100%;
+  line-height: 4rem;
+}
+
+.header {
+  width: 70%;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.header__item {
+  width: 50%;
+}
+
+.header__item .logo-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.header__item .logo-wrap a {
+  padding-right: 1rem;
+  margin-top: 0.5rem;
+}
+
+.header__item .logo-wrap a img {
+  line-height: 4rem;
+  width: 3rem;
+}
+
+.header__nav {
+  width: 50%;
+}
+
+.header__nav ul {
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.header__nav ul li {
+  list-style-type: none;
+}
+
+.header__nav ul li a {
+  text-decoration: none;
+}
+
+.article__body {
+  min-height: 30vh;
 }
 /*# sourceMappingURL=index.css.map */

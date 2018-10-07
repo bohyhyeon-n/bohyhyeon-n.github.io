@@ -2,6 +2,17 @@ $grey-lighter: #dddddd;
 $black-darkest: #262626;
 $black-darker: #212121;
 $grey-darkest: #424242;
+$content-width: 70%;
+$header-height: 4rem;
+body {
+  margin: 0;
+}
+
+.content {
+  width: $content-width;
+  margin: 0 auto;
+}
+
 .list {
   padding: 1.5rem;
   border-bottom: 1px solid $grey-lighter;
@@ -21,5 +32,53 @@ $grey-darkest: #424242;
     .desc {
       color: $grey-darkest;
     }
+  }
+}
+
+.header-wrap {
+  border-bottom: 1px solid $grey-lighter;
+  height: $header-height;
+  width: 100%;
+  line-height: $header-height;
+}
+
+.header {
+  width: $content-width;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  &__item {
+    width: 50%;
+    .logo-wrap {
+      display: flex;
+      a {
+        padding-right: 1rem;
+        margin-top: ($header-height - 3rem)/2;
+        img {
+          line-height: $header-height;
+          width: 3rem;
+        }
+      }
+    }
+  }
+  &__nav {
+    width: 50%;
+    ul {
+      margin: 0;
+      display: flex;
+      justify-content: space-evenly;
+      li {
+        list-style-type: none;
+        a {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+.article {
+  &__body {
+    min-height: 30vh;
   }
 }
